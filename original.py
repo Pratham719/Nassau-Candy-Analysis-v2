@@ -240,9 +240,9 @@ g.slicetext {
     gap: 0.6rem !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
     .block-container {
-        padding: 1rem;
+        padding: 0.8rem;
     }
     section[data-testid="stSidebar"] {
         width: 280px !important;
