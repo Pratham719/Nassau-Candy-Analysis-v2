@@ -336,6 +336,22 @@ section[data-testid="stSidebar"] .stDateInput {
     unsafe_allow_html=True,
 )
 
+st.components.v1.html("""
+<script>
+    const w = window.innerWidth;
+    // send width to Streamlit via query param
+    const url = new URL(window.parent.location.href);
+    if (url.searchParams.get('vw') !== String(w)) {
+        url.searchParams.set('vw', w);
+        window.parent.location.replace(url.toString());
+    }
+</script>
+""", height=0)
+
+# read it
+vw = int(st.query_params.get("vw", 1200))
+st.caption(f"🖥️ detected viewport width: {vw}px")  # temporary — remove after testing
+is_mobile = vw <= 768
 
 @st.cache_data
 def load_data(path="data/cleaned_data.csv"):
@@ -1057,13 +1073,11 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
-        showlegend=True,
+        showlegend=not is_mobile,
         legend=dict(
         orientation="v",
         x=1.02,
         y=0.5,
-        xanchor="left",
-        yanchor="middle",
         font=dict(size=11, color="#8a94b2"),
     ),
         **T,
