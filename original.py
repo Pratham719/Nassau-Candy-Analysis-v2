@@ -248,6 +248,20 @@ g.slicetext {
         width: 280px !important;
     }
 }
+@media (max-width: 768px) {
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+    }
+    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {
+        flex: 0 0 33% !important;
+        max-width: 33% !important;
+    }
+    [data-testid="stHorizontalBlock"] > [data-testeid="stVerticalBlockBorderWrapper"]:nth-child(4),
+    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"]:nth-child(5) {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
 hr {
     border: none;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -318,37 +332,6 @@ section[data-testid="stSidebar"] {
 /* calendar popup */
 section[data-testid="stSidebar"] .stDateInput {
     color: #c8d0e8 !important;
-}
-/* 📱 MOBILE KPI FIX */
-@media (max-width: 480px) {
-    .kpi-row {
-        grid-template-columns: 1fr;  /* 1 per row */
-    }
-}
-.kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-/* Top row (3 KPIs) */
-.kpi-1 { grid-column: 1 / span 2; }
-.kpi-2 { grid-column: 3 / span 2; }
-.kpi-3 { grid-column: 5 / span 2; }
-
-/* Bottom row (centered alignment) */
-.kpi-4 { grid-column: 2 / span 2; }
-.kpi-5 { grid-column: 4 / span 2; }
-
-/* Mobile fallback */
-@media (max-width: 768px) {
-    .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .kpi-1, .kpi-2, .kpi-3, .kpi-4, .kpi-5 {
-        grid-column: auto;
-    }
 }
 </style>
 """,
@@ -685,8 +668,16 @@ def kpi_section(filtered_df, full_df):
     ].mean()
 
     volatility = monthly_margin.std()
+    col1, col2, col3, col4, col5 = st.columns(5)
 
-    st.markdown(f"""
+    col1.metric("Gross Margin %", f"{gross_margin:.2f}%")
+    col2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
+    col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
+    col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+    col5.metric("Margin Volatility", f"{volatility:.2f}")
+
+    st.markdown(
+        f"""
     <div class="kpi-grid">
 
     <div class="kpi-1">
@@ -725,8 +716,11 @@ def kpi_section(filtered_df, full_df):
     </div>
 
 </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
+
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
         return "<b>No additional products</b>"
