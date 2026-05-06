@@ -368,7 +368,10 @@ def load_data(path="data/cleaned_data.csv"):
 
     return df
 
+
 is_mobile = st.session_state.get("is_mobile", False)
+
+
 def get_chart_theme(mode="dark"):
 
     T = dict(
@@ -737,8 +740,10 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             colors_top.append("#FFB347")
         else:
             colors_top.append("#FF6B6B")
-    top_products['Short Name']=top_products['Product Name'].apply(shorten_product_name)
-    
+    top_products["Short Name"] = top_products["Product Name"].apply(
+        shorten_product_name
+    )
+
     fig_top = go.Figure()
     fig_top.add_bar(
         y=top_products["Short Name"],  # ✅ FIXED
@@ -782,8 +787,9 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             colors_bottom.append("#FF6B6B")
         else:
             colors_bottom.append("#FFB347")
-    bottom_products['Short Name']=bottom_products['Product Name'].apply(shorten_product_name)
-
+    bottom_products["Short Name"] = bottom_products["Product Name"].apply(
+        shorten_product_name
+    )
 
     fig_bottom = go.Figure()
 
@@ -2200,7 +2206,7 @@ def tab3_B(filtered_df, T, PAL):
         T,
         "Product",
         metric,
-        title="📊 Pareto Analysis (80/20 Rule)<br><sup>Top products contributing to revenue</sup>",
+        title="📊 Pareto Analysis (80/20 Rule)",
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -2213,11 +2219,33 @@ def tab3_B(filtered_df, T, PAL):
     )
 
 
-tab1, tab2, tab3 = st.tabs(
+def data_download_section(filtered_df):
+
+    st.markdown("## 📥 Download Cleaned Dataset")
+
+    st.markdown("Use this dataset for further analysis or validation.")
+
+    csv = df.to_csv(index=False).encode("utf-8")
+
+    st.dataframe(df.head(50), use_container_width=True)
+
+    st.download_button(
+        label="⬇️ Download CSV",
+        data=csv,
+        file_name="nassau_cleaned_data.csv",
+        mime="text/csv",
+    )
+    insight_box(
+        "Dataset is cleaned, normalized, and ready for external analysis.", "info"
+    )
+
+
+tab1, tab2, tab3, tab4 = st.tabs(
     [
         "📊 Product Performance",
         "🏢 Division Insights",
         "📈 Business Stability & Risk Insights",
+        "Data Explorer",
     ]
 )
 
@@ -2240,3 +2268,5 @@ with tab2:
     tab2_division_insights(filtered_df, T, PAL)
 with tab3:
     tab3_B(filtered_df, T, PAL)
+with tab4:
+    data_download_section(filtered_df)
