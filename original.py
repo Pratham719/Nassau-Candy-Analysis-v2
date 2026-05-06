@@ -368,7 +368,7 @@ def load_data(path="data/cleaned_data.csv"):
 
     return df
 
-
+is_mobile = st.session_state.get("is_mobile", False)
 def get_chart_theme(mode="dark"):
 
     T = dict(
@@ -737,11 +737,11 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             colors_top.append("#FFB347")
         else:
             colors_top.append("#FF6B6B")
-
+    top_products['Short Name']=top_products['Product Name'].apply(shorten_product_name)
+    
     fig_top = go.Figure()
-
     fig_top.add_bar(
-        y=top_products["Product Name"],  # ✅ FIXED
+        y=top_products["Short Name"],  # ✅ FIXED
         x=top_products["Gross Profit"],  # ✅ FIXED
         orientation="h",
         marker=dict(
@@ -782,11 +782,13 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             colors_bottom.append("#FF6B6B")
         else:
             colors_bottom.append("#FFB347")
+    bottom_products['Short Name']=bottom_products['Product Name'].apply(shorten_product_name)
+
 
     fig_bottom = go.Figure()
 
     fig_bottom.add_bar(
-        y=bottom_products["Product Name"],  # ✅ FIXED
+        y=bottom_products["Short Name"],  # ✅ FIXED
         x=bottom_products["Gross Profit"],  # ✅ FIXED
         orientation="h",
         marker=dict(
@@ -931,6 +933,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
+        tickangle=-30,
         ticktext=labels,
         categoryorder="array",
         categoryarray=labels,
@@ -2170,8 +2173,7 @@ def tab3_B(filtered_df, T, PAL):
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
-        ticktext=labels,
-        tickangle=-25,
+        tickangle=-30,
         ticktext=final_df["Short Name"],
     )
 
