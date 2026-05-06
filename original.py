@@ -15,25 +15,6 @@ st.set_page_config(
     layout="wide",
 )
 st.title("🍬 Nassau Candy Profitability Dashboard")
-# 📱 MOBILE DETECTION via JS
-st.components.v1.html(
-    """
-<script>
-    const w = window.innerWidth;
-    const url = new URL(window.parent.location.href);
-    if (w <= 768 && url.searchParams.get('mobile') !== '1') {
-        url.searchParams.set('mobile', '1');
-        window.parent.location.replace(url.toString());
-    } else if (w > 768 && url.searchParams.get('mobile') === '1') {
-        url.searchParams.delete('mobile');
-        window.parent.location.replace(url.toString());
-    }
-</script>
-""",
-    height=0,
-)
-
-is_mobile = st.query_params.get("mobile", "0") == "1"
 
 st.markdown(
     """
@@ -339,9 +320,15 @@ section[data-testid="stSidebar"] .stDateInput {
     color: #c8d0e8 !important;
 }
 @media (max-width: 768px) {
-    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {
+    .block-container {
+        padding: 0.8rem;
+    }
+    section[data-testid="stSidebar"] {
+        width: 280px !important;
+    }
+    /* KPI only — target first horizontal block inside tab1 */
+    [data-testid="stMetric"] {
         min-width: 100% !important;
-        flex: 1 1 100% !important;
     }
 }
 </style>
@@ -1067,16 +1054,18 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         customdata=donut_data["Hover"],
         hovertemplate="%{customdata}<extra></extra>",
     )
-    legend_cfg = (
-        dict(orientation="h", x=0.5, y=-0.15, xanchor="center", yanchor="top")
-        if is_mobile
-        else dict(orientation="v", x=1.02, y=0.5, xanchor="left", yanchor="middle")
-    )
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
         showlegend=True,
-        legend=dict(**legend_cfg),
+        legend=dict(
+        orientation="v",
+        x=1.02,
+        y=0.5,
+        xanchor="left",
+        yanchor="middle",
+        font=dict(size=11, color="#8a94b2"),
+    ),
         **T,
     )
 
