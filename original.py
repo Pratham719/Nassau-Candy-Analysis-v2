@@ -15,6 +15,25 @@ st.set_page_config(
     layout="wide",
 )
 st.title("🍬 Nassau Candy Profitability Dashboard")
+# 📱 MOBILE DETECTION via JS
+st.components.v1.html(
+    """
+<script>
+    const w = window.innerWidth;
+    const url = new URL(window.parent.location.href);
+    if (w <= 768 && url.searchParams.get('mobile') !== '1') {
+        url.searchParams.set('mobile', '1');
+        window.parent.location.replace(url.toString());
+    } else if (w > 768 && url.searchParams.get('mobile') === '1') {
+        url.searchParams.delete('mobile');
+        window.parent.location.replace(url.toString());
+    }
+</script>
+""",
+    height=0,
+)
+
+is_mobile = st.query_params.get("mobile", "0") == "1"
 
 st.markdown(
     """
@@ -363,10 +382,6 @@ def load_data(path="data/cleaned_data.csv"):
     df = df.replace([float("inf"), -float("inf")], 0)
 
     return df
-
-
-is_mobile = st.session_state.get("is_mobile", False)
-
 
 def get_chart_theme(mode="dark"):
 
