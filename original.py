@@ -1177,7 +1177,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig_tree.update_layout(
         height=580,
         title="🌳 Product Mix & Margin Structure",
-        **{**T, "paper_bgcolor": "#0D2818", "plot_bgcolor": "#0D2818"},
+        **T,
     )
 
     st.plotly_chart(fig_tree, use_container_width=True)
