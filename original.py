@@ -320,14 +320,29 @@ section[data-testid="stSidebar"] .stDateInput {
     color: #c8d0e8 !important;
 }
 /* 📱 MOBILE KPI FIX */
-@media (max-width: 768px) {
-    .kpi-row {
-        grid-template-columns: repeat(2, 1fr);  /* 2 per row */
-    }
-}
 @media (max-width: 480px) {
     .kpi-row {
         grid-template-columns: 1fr;  /* 1 per row */
+    }
+}
+/* MOBILE KPI PERFECT CENTER ALIGN */
+@media (max-width: 768px) {
+
+    div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        justify-content: center !important;  /* 🔥 center rows */
+    }
+
+    div[data-testid="stHorizontalBlock"] > div {
+        flex: 0 0 30% !important;  /* 3 per row */
+        max-width: 30% !important;
+    }
+
+    /* Force 4th & 5th to center row */
+    div[data-testid="stHorizontalBlock"] > div:nth-child(4),
+    div[data-testid="stHorizontalBlock"] > div:nth-child(5) {
+        flex: 0 0 40% !important;  /* bigger so they center */
+        max-width: 40% !important;
     }
 }
 </style>
@@ -667,14 +682,19 @@ def kpi_section(filtered_df, full_df):
     volatility = monthly_margin.std()
 
     # ===================== KPI DISPLAY =====================
-    col1, col2, col3, col4, col5 = st.columns(5)
+    cols = st.columns(5)
 
-    col1.metric("Gross Margin %", f"{gross_margin:.2f}%")
-    col2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
-    col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
-    col5.metric("Margin Volatility", f"{volatility:.2f}")
+    metrics = [
+    ("Gross Margin %", f"{gross_margin:.2f}%"),
+    ("Profit per Unit", f"₹{profit_per_unit:.2f}"),
+    ("Revenue Contribution", f"{revenue_contribution:.2f}%"),
+    ("Profit Contribution", f"{profit_contribution:.2f}%"),
+    ("Margin Volatility", f"{volatility:.2f}")
+]
 
+    for col, (label, value) in zip(cols, metrics):
+        with col:
+            st.metric(label, value)
 
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
@@ -957,7 +977,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             font=dict(color="#8a94b2", size=11),
             bgcolor="rgba(0,0,0,0)",
             orientation="h",
-            y=1.05,
+            y=-1.05,
             x=0.4,
         ),
         **T,
