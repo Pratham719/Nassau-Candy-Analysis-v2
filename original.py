@@ -1060,9 +1060,12 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     )
     st.plotly_chart(fig_donut, use_container_width=True)
 
+    top_product = donut_data.iloc[0]["Product Name"]
+    top_share = donut_data.iloc[0]["Contribution %"]
+
     insight_box(
-        "A few products dominate profit . Focus on scaling these.",
-        "info",
+        f"{top_product} alone contributes {top_share:.1f}% of total profit — high dependency risk.",
+        "warning",
     )
 
     # ================= PRODUCT MIX (UPGRADED) =================
@@ -1088,6 +1091,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         "#14B8A6",
         "#F97316",
     ]
+    tree_data = tree_data.sort_values("Sales", ascending=False)
     div_list = list(tree_data["Division"].unique())
     tree_div_color_map = {
         d: TREE_DIV_PALETTE[i % len(TREE_DIV_PALETTE)] for i, d in enumerate(div_list)
@@ -1768,7 +1772,7 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     div["Efficiency"] = div["Gross Profit"] / div["Sales"]
     div["Gap ₹"] = div["Sales"] - div["Gross Profit"]
-    div["Margin %"] = (df["Gross Profit"] / df["Sales"]) * 100
+    div["Margin %"] = (div["Gross Profit"] / div["Sales"]) * 100
 
     # ── UNIQUE COLOR MAP (consistent across all 3 charts) ──
     DIVISION_PALETTE = [
@@ -1951,12 +1955,13 @@ def tab3_B(filtered_df, T, PAL):
     with col1:
         risk = "High" if volatility > 5 else "Moderate" if volatility > 3 else "Stable"
 
-        st.metric(
-            "📉 Volatility",
-            f"{volatility:.2f}",
-            delta=risk,
-            delta_color="inverse" if volatility > 5 else "normal",
-        )
+        # st.metric(
+        #     "📉 Volatility",
+        #     f"{volatility:.2f}",
+        #     delta=risk,
+        #     delta_color="inverse" if volatility > 5 else "normal",
+        # )
+        st.metric("Margin Volatility", f"{volatility:.2f}")
     # 📊 CHART
     fig = go.Figure()
 
@@ -2174,7 +2179,13 @@ def tab3_B(filtered_df, T, PAL):
         **T,
     )
 
-    fig = sfig(fig, T, "Product", metric, title="📊 Pareto Analysis (80/20 Rule)")
+    fig = sfig(
+        fig,
+        T,
+        "Product",
+        metric,
+        title="📊 Pareto Analysis (80/20 Rule)<br><sup>Top products contributing to revenue</sup>",
+    )
 
     st.plotly_chart(fig, use_container_width=True)
 
