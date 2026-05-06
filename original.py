@@ -319,6 +319,12 @@ section[data-testid="stSidebar"] {
 section[data-testid="stSidebar"] .stDateInput {
     color: #c8d0e8 !important;
 }
+@media (max-width: 768px) {
+    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {
+        min-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -661,6 +667,7 @@ def kpi_section(filtered_df, full_df):
     col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
     col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
     col5.metric("Margin Volatility", f"{volatility:.2f}")
+
 
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
@@ -1045,19 +1052,16 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         customdata=donut_data["Hover"],
         hovertemplate="%{customdata}<extra></extra>",
     )
-
-    # LAYOUT FIX (IMPORTANT)
+    legend_cfg = (
+        dict(orientation="h", x=0.5, y=-0.15, xanchor="center", yanchor="top")
+        if is_mobile
+        else dict(orientation="v", x=1.02, y=0.5, xanchor="left", yanchor="middle")
+    )
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
         showlegend=True,
-        legend=dict(
-            orientation="v",
-            x=-0.2,
-            y=1.05,
-            xanchor="center",
-            font=dict(size=11, color="#8a94b2"),
-        ),
+        legend=dict(**legend_cfg),
         **T,
     )
 
