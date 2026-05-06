@@ -657,14 +657,24 @@ def kpi_section(filtered_df, full_df):
 
     volatility = monthly_margin.std()
     if st.session_state.get("is_mobile", False):
-        for label, val in [
+        kpis = [
             ("Gross Margin %", f"{gross_margin:.2f}%"),
             ("Profit per Unit", f"₹{profit_per_unit:.2f}"),
             ("Revenue Contribution", f"{revenue_contribution:.2f}%"),
             ("Profit Contribution", f"{profit_contribution:.2f}%"),
             ("Margin Volatility", f"{volatility:.2f}"),
-        ]:
-            st.metric(label, val)
+        ]
+        # 2 per row, last one centered
+        row1 = st.columns(2)
+        row1[0].metric(kpis[0][0], kpis[0][1])
+        row1[1].metric(kpis[1][0], kpis[1][1])
+
+        row2 = st.columns(2)
+        row2[0].metric(kpis[2][0], kpis[2][1])
+        row2[1].metric(kpis[3][0], kpis[3][1])
+        # last KPI centered
+        _, mid, _ = st.columns([1, 2, 1])
+        mid.metric(kpis[4][0], kpis[4][1])
     else:
         c1, c2, c3, c4, c5 = st.columns(5)
         c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
