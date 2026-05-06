@@ -239,15 +239,6 @@ g.slicetext {
 .css-1kyxreq, .css-1v0mbdj {
     gap: 0.6rem !important;
 }
-
-@media (max-width: 768px) {
-    .block-container {
-        padding: 0.8rem;
-    }
-    section[data-testid="stSidebar"] {
-        width: 280px !important;
-    }
-}
 hr {
     border: none;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -336,20 +327,6 @@ section[data-testid="stSidebar"] .stDateInput {
     unsafe_allow_html=True,
 )
 
-st.components.v1.html("""
-<script>
-    const w = window.screen.width;
-    const url = new URL(window.parent.location.href);
-    if (url.searchParams.get('vw') !== String(w)) {
-        url.searchParams.set('vw', w);
-        window.parent.location.replace(url.toString());
-    }
-</script>
-""", height=0)
-
-vw = int(st.query_params.get("vw", 1200))
-st.caption(f"🖥️ screen width: {vw}px")  # remove after testing
-is_mobile = vw <= 768
 
 @st.cache_data
 def load_data(path="data/cleaned_data.csv"):
@@ -383,6 +360,7 @@ def load_data(path="data/cleaned_data.csv"):
     df = df.replace([float("inf"), -float("inf")], 0)
 
     return df
+
 
 def get_chart_theme(mode="dark"):
 
@@ -570,6 +548,8 @@ def render_sidebar(df):
         options=factory_options,
         default=factory_options,
     )
+    is_mobile = st.sidebar.checkbox("📱 Mobile view", value=False)
+    st.session_state["is_mobile"] = is_mobile
 
     return {
         "date_range": date_range,
@@ -676,13 +656,22 @@ def kpi_section(filtered_df, full_df):
     ].mean()
 
     volatility = monthly_margin.std()
-    col1, col2, col3, col4, col5 = st.columns(5)
-
-    col1.metric("Gross Margin %", f"{gross_margin:.2f}%")
-    col2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
-    col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
-    col5.metric("Margin Volatility", f"{volatility:.2f}")
+    if st.session_state.get("is_mobile", False):
+        for label, val in [
+            ("Gross Margin %", f"{gross_margin:.2f}%"),
+            ("Profit per Unit", f"₹{profit_per_unit:.2f}"),
+            ("Revenue Contribution", f"{revenue_contribution:.2f}%"),
+            ("Profit Contribution", f"{profit_contribution:.2f}%"),
+            ("Margin Volatility", f"{volatility:.2f}"),
+        ]:
+            st.metric(label, val)
+    else:
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
+        c2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
+        c3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
+        c4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+        c5.metric("Margin Volatility", f"{volatility:.2f}")
 
 
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
@@ -1071,13 +1060,13 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
-        showlegend=not is_mobile,
+        showlegend=False,
         legend=dict(
-        orientation="v",
-        x=1.02,
-        y=0.5,
-        font=dict(size=11, color="#8a94b2"),
-    ),
+            orientation="v",
+            x=1.02,
+            y=0.5,
+            font=dict(size=11, color="#8a94b2"),
+        ),
         **T,
     )
 
