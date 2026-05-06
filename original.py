@@ -605,16 +605,30 @@ def apply_filters(df, filters):
     return filtered_df
 
 
-def shorten_product_name(name):
-    name = str(name)
+def shorten_product_name(name, max_len=14):
+    name = str(name).strip()
 
     lower = name.lower()
 
+    # 🔹 1. Smart prefix shortening
     if lower.startswith("wonka bar -"):
-        name = "WK" + name[11:]  # 🔥 removes prefix safely
+        name = "WK " + name[11:].strip()
 
-    # Trim long names
-    return name if len(name) <= 18 else name[:16] + "…"
+    # 🔹 2. Remove extra spaces
+    name = " ".join(name.split())
+
+    # 🔹 3. Smart word-based shortening (better than raw slicing)
+    if len(name) > max_len:
+        words = name.split()
+
+        if len(words) > 1:
+            # Take first letters of words → cleaner than cutting mid-word
+            short = " ".join([w[:4] for w in words[:2]])
+            return short + "…"
+        else:
+            return name[:max_len] + "…"
+
+    return name
 
 
 def kpi_section(filtered_df, full_df):
@@ -1025,7 +1039,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig_donut.add_pie(
         labels=donut_data["Product Name"],
         values=donut_data["Gross Profit"],
-        hole=0.68,
+        hole=0.75,
         marker=dict(
             colors=colors[: len(donut_data)],
             line=dict(color="#0f172a", width=2),  # clean separation
@@ -1043,8 +1057,9 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         showlegend=True,
         legend=dict(
             orientation="v",
-            x=1.02,
+            x=-0.2,
             y=0.5,
+            xanchor="center",
             font=dict(size=11, color="#8a94b2"),
         ),
         **T,
@@ -1131,7 +1146,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     # PRODUCT LEVEL
     for _, row in tree_data.iterrows():
         prod_id = f"prod__{row['Division']}__{row['Product Name']}"
-        labels.append(row["Product Name"])
+        labels.append(shorten_product_name(row["Product Name"], 12))
         ids.append(prod_id)
         parents.append(f"div__{row['Division']}")
         values.append(row["Sales"])
@@ -2156,7 +2171,8 @@ def tab3_B(filtered_df, T, PAL):
         tickmode="array",
         tickvals=x,
         ticktext=labels,
-        tickangle=0,
+        tickangle=-25,
+        ticktext=final_df["Short Name"],
     )
 
     # 🧱 LAYOUT (MATCH YOUR SYSTEM)
