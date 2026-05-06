@@ -325,32 +325,29 @@ section[data-testid="stSidebar"] .stDateInput {
         grid-template-columns: 1fr;  /* 1 per row */
     }
 }
-/* helper class to hide/show blocks */
-.desktop-only { display: block; }
-.mobile-only { display: none; }
-
-@media (max-width: 768px) {
-    .desktop-only { display: none; }
-    .mobile-only { display: block; }
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
 }
-/* MOBILE KPI PERFECT CENTER ALIGN */
+
+/* Top row (3 KPIs) */
+.kpi-1 { grid-column: 1 / span 2; }
+.kpi-2 { grid-column: 3 / span 2; }
+.kpi-3 { grid-column: 5 / span 2; }
+
+/* Bottom row (centered alignment) */
+.kpi-4 { grid-column: 2 / span 2; }
+.kpi-5 { grid-column: 4 / span 2; }
+
+/* Mobile fallback */
 @media (max-width: 768px) {
-
-    div[data-testid="stHorizontalBlock"] {
-        flex-wrap: wrap !important;
-        justify-content: center !important;  /* 🔥 center rows */
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-
-    div[data-testid="stHorizontalBlock"] > div {
-        flex: 0 0 30% !important;  /* 3 per row */
-        max-width: 30% !important;
-    }
-
-    /* Force 4th & 5th to center row */
-    div[data-testid="stHorizontalBlock"] > div:nth-child(4),
-    div[data-testid="stHorizontalBlock"] > div:nth-child(5) {
-        flex: 0 0 40% !important;  /* bigger so they center */
-        max-width: 40% !important;
+    .kpi-1, .kpi-2, .kpi-3, .kpi-4, .kpi-5 {
+        grid-column: auto;
     }
 }
 </style>
@@ -689,36 +686,47 @@ def kpi_section(filtered_df, full_df):
 
     volatility = monthly_margin.std()
 
-    # ================= DESKTOP (5 IN ONE ROW) =================
-    st.markdown('<div class="desktop-only">', unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="kpi-grid">
 
-    col1, col2, col3, col4, col5 = st.columns(5)
+    <div class="kpi-1">
+        <div data-testid="stMetric">
+            <div data-testid="stMetricLabel">Gross Margin %</div>
+            <div data-testid="stMetricValue">{gross_margin:.2f}%</div>
+        </div>
+    </div>
 
-    col1.metric("Gross Margin %", f"{gross_margin:.2f}%")
-    col2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
-    col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
-    col5.metric("Margin Volatility", f"{volatility:.2f}")
+    <div class="kpi-2">
+        <div data-testid="stMetric">
+            <div data-testid="stMetricLabel">Profit per Unit</div>
+            <div data-testid="stMetricValue">₹{profit_per_unit:.2f}</div>
+        </div>
+    </div>
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    <div class="kpi-3">
+        <div data-testid="stMetric">
+            <div data-testid="stMetricLabel">Revenue Contribution</div>
+            <div data-testid="stMetricValue">{revenue_contribution:.2f}%</div>
+        </div>
+    </div>
 
+    <div class="kpi-4">
+        <div data-testid="stMetric">
+            <div data-testid="stMetricLabel">Profit Contribution</div>
+            <div data-testid="stMetricValue">{profit_contribution:.2f}%</div>
+        </div>
+    </div>
 
-# ================= MOBILE (3 + 2 PERFECT CENTER) =================
-    st.markdown('<div class="mobile-only">', unsafe_allow_html=True)
+    <div class="kpi-5">
+        <div data-testid="stMetric">
+            <div data-testid="stMetricLabel">Margin Volatility</div>
+            <div data-testid="stMetricValue">{volatility:.2f}</div>
+        </div>
+    </div>
 
-# Row 1 → 3 KPIs
-    m1, m2, m3 = st.columns(3)
-    m1.metric("Gross Margin %", f"{gross_margin:.2f}%")
-    m2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    m3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
-
-# Row 2 → centered 2 KPIs
-    space1, m4, m5, space2 = st.columns([1, 2, 2, 1])
-    m4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
-    m5.metric("Margin Volatility", f"{volatility:.2f}")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
+</div>
+    """, unsafe_allow_html=True)
+    
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
         return "<b>No additional products</b>"
