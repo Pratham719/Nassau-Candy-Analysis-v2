@@ -1,0 +1,280 @@
+🚀 OVERALL PROJECT STRUCTURE
+Nassau-Candy-Profitability-Analysis/
+│
+├── data/
+│   ├── raw_data.csv
+│   ├── cleaned_data.csv
+│
+├── notebooks/
+│   ├── 01_data_cleaning.ipynb
+│   ├── 02_eda_analysis.ipynb
+│   ├── 03_profitability_analysis.ipynb
+│
+├── src/
+│   ├── data_processing.py
+│   ├── kpi_calculations.py
+│   ├── visualization.py
+│
+├── dashboard/
+│   ├── app.py   (Streamlit main file)
+│
+├── outputs/
+│   ├── charts/
+│   ├── insights.txt
+│
+├── reports/
+│   ├── research_paper.pdf
+│   ├── executive_summary.pdf
+│
+├── README.md
+├── requirements.txt
+📅 9-DAY MASTER PLAN
+🔹 DAY 1 — Understanding + Setup
+
+Goal: Foundation strong
+
+✔ Understand dataset + problem
+✔ Create folder structure
+✔ Setup environment (VS Code + Streamlit)
+
+Tasks:
+
+Load dataset
+Check:
+null values
+data types
+duplicates
+
+👉 Output:
+
+01_data_cleaning.ipynb (basic exploration)
+🔹 DAY 2 — Data Cleaning & Validation
+
+Goal: Clean, reliable dataset
+
+✔ Handle:
+
+Missing units
+Invalid profit values
+Zero sales rows
+
+✔ Create new columns:
+
+Gross Margin %
+Profit per Unit
+
+👉 Output:
+
+cleaned_data.csv
+🔹 DAY 3 — KPI Engineering (VERY IMPORTANT)
+
+Goal: Core business metrics
+
+Create:
+
+Gross Margin (%)
+Profit per Unit
+Revenue Contribution
+Profit Contribution
+
+👉 This is your core project strength
+
+🔹 DAY 4 — Product-Level Analysis
+
+Goal: Answer business questions
+
+Analyze:
+
+✔ Top profitable products
+✔ High sales but low margin ⚠️
+✔ Low-performing products
+
+👉 Create:
+
+Leaderboards
+Bar charts
+Scatter plots
+🔹 DAY 5 — Division-Level Analysis
+
+Goal: Strategic insights
+
+✔ Revenue vs Profit comparison
+✔ Avg margin per division
+✔ Identify weak divisions
+
+👉 Add:
+
+Heatmaps
+Boxplots
+🔹 DAY 6 — Advanced Analysis (THIS MAKES YOU STAND OUT ⭐)
+🔸 Pareto Analysis (80/20 Rule)
+Top 20% products → 80% profit?
+🔸 Cost vs Sales Scatter
+Identify inefficient products
+🔸 Margin Risk Detection
+Low margin + high cost products
+
+👉 Output:
+
+Strong insights (write them!)
+🔹 DAY 7 — Streamlit Dashboard
+
+Goal: Interactive app
+
+Create sections:
+
+🧩 Modules:
+Product Profitability
+Division Performance
+Cost Diagnostics
+Pareto Analysis
+🎛 Filters:
+Date range
+Division
+Margin slider
+Product search
+
+👉 File:
+dashboard/app.py
+
+🔹 DAY 8 — Research Paper + Executive Summary
+
+Goal: Professional documentation
+
+📄 Research Paper Structure:
+Introduction
+Problem Statement
+Data Description
+Methodology
+Analysis
+Key Insights
+Recommendations
+Conclusion
+
+📊 Executive Summary (1–2 pages)
+
+Focus on:
+
+Key findings
+Business impact
+Decisions suggested
+🔹 DAY 9 — Final Polish + GitHub
+
+Goal: Portfolio-ready project
+
+✔ Write README.md
+✔ Add screenshots
+✔ Upload to GitHub
+✔ Record demo (optional 🔥)
+
+🧠 WHAT MAKES YOUR PROJECT STRONG
+💡 Add these insights (important)
+“Top 10 products contribute 75% of total profit”
+“Some high-selling products have <10% margin”
+“Division X has high revenue but poor profitability”
+“Few products create dependency risk”
+
+
+📊 STREAMLIT DASHBOARD STRUCTURE
+Sidebar:
+- Date filter
+- Division filter
+- Margin slider
+
+Main Page:
+1. KPIs (Top cards)
+2. Product leaderboard
+3. Division comparison
+4. Scatter plots
+5. Pareto chart
+
+✅ ✅ WHAT YOU’VE COVERED (STRONG ✔️)
+🔹 1. Data Cleaning & Validation
+
+✔ Missing values
+✔ Invalid profit
+✔ Standardization
+✔ Zero-sales removal
+
+✅ Fully covered
+
+🔹 2. KPI Calculations
+
+✔ Gross Margin %
+✔ Profit per Unit
+✔ Revenue Contribution
+✔ Profit Contribution
+
+🟡 Missing (IMPORTANT):
+
+❌ Margin Volatility (over time)
+🔹 3. Product-Level Analysis
+
+✔ Ranking by profit
+✔ Ranking by margin
+✔ High/low performers
+
+✅ Fully covered
+
+🔹 4. Division-Level Analysis
+
+✔ Revenue vs profit
+✔ Avg margin
+✔ Comparison
+
+✅ Fully covered
+
+🔹 5. Pareto Analysis
+
+✔ 80/20 rule
+✔ Contribution analysis
+
+🟡 Slight gap:
+
+❌ Explicit dependency risk explanation (must mention in insights)
+🔹 6. Cost Diagnostics
+
+✔ Scatter plot
+✔ Identify inefficient products
+
+🟡 Missing clarity:
+
+❌ Explicit action tagging:
+Reprice
+Discontinue
+Renegotiate cost
+🔹 7. Streamlit Dashboard
+
+✔ Modules included
+✔ Filters included
+
+🟡 Missing:
+
+❌ Margin Risk Flags (explicit visual indicator)
+🔹 8. Deliverables
+
+✔ Research paper
+✔ Dashboard
+✔ Executive summary
+
+🟡 Missing:
+
+❌ Proper alignment with conclusion requirement
+🚨 🚨 CRITICAL THING YOU MISSED (BIG ONE)
+❌ FACTORY + GEOGRAPHICAL ANALYSIS
+
+You were given:
+
+Factory coordinates
+Product → Factory mapping
+
+👉 But your plan does NOT use it at all
+
+🔥 You MUST ADD:
+📍 Factory-Level Analysis
+Profit by factory
+Cost efficiency by factory
+
+Which factory produces:
+high-margin products
+low-margin products
