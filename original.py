@@ -325,6 +325,14 @@ section[data-testid="stSidebar"] .stDateInput {
         grid-template-columns: 1fr;  /* 1 per row */
     }
 }
+/* helper class to hide/show blocks */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+@media (max-width: 768px) {
+    .desktop-only { display: none; }
+    .mobile-only { display: block; }
+}
 /* MOBILE KPI PERFECT CENTER ALIGN */
 @media (max-width: 768px) {
 
@@ -681,20 +689,35 @@ def kpi_section(filtered_df, full_df):
 
     volatility = monthly_margin.std()
 
-    # ===================== KPI DISPLAY =====================
-    cols = st.columns(5)
+    # ================= DESKTOP (5 IN ONE ROW) =================
+    st.markdown('<div class="desktop-only">', unsafe_allow_html=True)
 
-    metrics = [
-    ("Gross Margin %", f"{gross_margin:.2f}%"),
-    ("Profit per Unit", f"₹{profit_per_unit:.2f}"),
-    ("Revenue Contribution", f"{revenue_contribution:.2f}%"),
-    ("Profit Contribution", f"{profit_contribution:.2f}%"),
-    ("Margin Volatility", f"{volatility:.2f}")
-]
+    col1, col2, col3, col4, col5 = st.columns(5)
 
-    for col, (label, value) in zip(cols, metrics):
-        with col:
-            st.metric(label, value)
+    col1.metric("Gross Margin %", f"{gross_margin:.2f}%")
+    col2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
+    col3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
+    col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+    col5.metric("Margin Volatility", f"{volatility:.2f}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ================= MOBILE (3 + 2 PERFECT CENTER) =================
+    st.markdown('<div class="mobile-only">', unsafe_allow_html=True)
+
+# Row 1 → 3 KPIs
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Gross Margin %", f"{gross_margin:.2f}%")
+    m2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
+    m3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
+
+# Row 2 → centered 2 KPIs
+    space1, m4, m5, space2 = st.columns([1, 2, 2, 1])
+    m4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+    m5.metric("Margin Volatility", f"{volatility:.2f}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
