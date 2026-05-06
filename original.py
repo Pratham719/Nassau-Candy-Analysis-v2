@@ -338,8 +338,7 @@ section[data-testid="stSidebar"] .stDateInput {
 
 st.components.v1.html("""
 <script>
-    const w = window.innerWidth;
-    // send width to Streamlit via query param
+    const w = window.screen.width;
     const url = new URL(window.parent.location.href);
     if (url.searchParams.get('vw') !== String(w)) {
         url.searchParams.set('vw', w);
@@ -348,9 +347,8 @@ st.components.v1.html("""
 </script>
 """, height=0)
 
-# read it
 vw = int(st.query_params.get("vw", 1200))
-st.caption(f"🖥️ detected viewport width: {vw}px")  # temporary — remove after testing
+st.caption(f"🖥️ screen width: {vw}px")  # remove after testing
 is_mobile = vw <= 768
 
 @st.cache_data
