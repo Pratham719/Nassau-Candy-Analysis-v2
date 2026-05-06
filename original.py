@@ -546,7 +546,8 @@ def render_sidebar(df):
     )
     is_mobile = st.sidebar.checkbox("📱 Mobile view", value=False)
     st.session_state["is_mobile"] = is_mobile
-
+    if is_mobile:
+        st.sidebar.caption("💡 Rotate phone horizontally for best view.")
     return {
         "date_range": date_range,
         "divisions": selected_divisions,
