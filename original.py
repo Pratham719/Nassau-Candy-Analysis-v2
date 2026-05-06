@@ -317,10 +317,6 @@ section[data-testid="stSidebar"] .stDateInput {
     section[data-testid="stSidebar"] {
         width: 280px !important;
     }
-    /* KPI only — target first horizontal block inside tab1 */
-    [data-testid="stMetric"] {
-        min-width: 100% !important;
-    }
 }
 </style>
 """,
