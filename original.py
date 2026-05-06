@@ -215,9 +215,6 @@ div[data-testid="stMetric"]:hover {
     overflow: hidden !important;
     max-height:  100% !important ;
 }
-.main .block-container {
-    max-width: 100% !important;
-}
 /* Plotly internal fix */
 .js-plotly-plot .plotly {
     overflow: hidden !important;
@@ -255,13 +252,6 @@ hr {
     border: none;
     border-top: 1px solid rgba(255,255,255,0.06);
     margin: 1rem 0;
-}
-.stPlotlyChart {
-    overflow: hidden !important;
-}
-[data-testid="stPlotlyChart"] {
-    min-width: 0 !important;
-    overflow: hidden !important;
 }
 .js-plotly-plot {
     width: 100% !important;
@@ -328,6 +318,17 @@ section[data-testid="stSidebar"] {
 /* calendar popup */
 section[data-testid="stSidebar"] .stDateInput {
     color: #c8d0e8 !important;
+}
+/* 📱 MOBILE KPI FIX */
+@media (max-width: 768px) {
+    .kpi-row {
+        grid-template-columns: repeat(2, 1fr);  /* 2 per row */
+    }
+}
+@media (max-width: 480px) {
+    .kpi-row {
+        grid-template-columns: 1fr;  /* 1 per row */
+    }
 }
 </style>
 """,
@@ -1526,7 +1527,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
         hovertemplate="%{customdata}<extra></extra>",
     )
     fig_trap.update_xaxes(
-        tickangle=0,
+        tickangle=-30,
         categoryorder="array",
         categoryarray=trap_df["Short Name"].tolist(),
     )
@@ -2223,11 +2224,9 @@ def data_download_section(filtered_df):
 
     st.markdown("## 📥 Download Cleaned Dataset")
 
-    st.markdown("Use this dataset for further analysis or validation.")
-
     csv = df.to_csv(index=False).encode("utf-8")
 
-    st.dataframe(df.head(50), use_container_width=True)
+    st.dataframe(df.head(200), use_container_width=True)
 
     st.download_button(
         label="⬇️ Download CSV",
