@@ -248,20 +248,6 @@ g.slicetext {
         width: 280px !important;
     }
 }
-@media (max-width: 768px) {
-    [data-testid="stHorizontalBlock"] {
-        flex-wrap: wrap !important;
-    }
-    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {
-        flex: 0 0 33% !important;
-        max-width: 33% !important;
-    }
-    [data-testid="stHorizontalBlock"] > [data-testeid="stVerticalBlockBorderWrapper"]:nth-child(4),
-    [data-testid="stHorizontalBlock"] > [data-testid="stVerticalBlockBorderWrapper"]:nth-child(5) {
-        flex: 0 0 50% !important;
-        max-width: 50% !important;
-    }
-}
 hr {
     border: none;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -676,51 +662,6 @@ def kpi_section(filtered_df, full_df):
     col4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
     col5.metric("Margin Volatility", f"{volatility:.2f}")
 
-    st.markdown(
-        f"""
-    <div class="kpi-grid">
-
-    <div class="kpi-1">
-        <div data-testid="stMetric">
-            <div data-testid="stMetricLabel">Gross Margin %</div>
-            <div data-testid="stMetricValue">{gross_margin:.2f}%</div>
-        </div>
-    </div>
-
-    <div class="kpi-2">
-        <div data-testid="stMetric">
-            <div data-testid="stMetricLabel">Profit per Unit</div>
-            <div data-testid="stMetricValue">₹{profit_per_unit:.2f}</div>
-        </div>
-    </div>
-
-    <div class="kpi-3">
-        <div data-testid="stMetric">
-            <div data-testid="stMetricLabel">Revenue Contribution</div>
-            <div data-testid="stMetricValue">{revenue_contribution:.2f}%</div>
-        </div>
-    </div>
-
-    <div class="kpi-4">
-        <div data-testid="stMetric">
-            <div data-testid="stMetricLabel">Profit Contribution</div>
-            <div data-testid="stMetricValue">{profit_contribution:.2f}%</div>
-        </div>
-    </div>
-
-    <div class="kpi-5">
-        <div data-testid="stMetric">
-            <div data-testid="stMetricLabel">Margin Volatility</div>
-            <div data-testid="stMetricValue">{volatility:.2f}</div>
-        </div>
-    </div>
-
-</div>
-    """,
-        unsafe_allow_html=True,
-    )
-
-
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
     if df.empty:
         return "<b>No additional products</b>"
@@ -1002,7 +943,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             font=dict(color="#8a94b2", size=11),
             bgcolor="rgba(0,0,0,0)",
             orientation="h",
-            y=-1.05,
+            y=1.05,
             x=0.4,
         ),
         **T,
@@ -1094,7 +1035,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig_donut.add_pie(
         labels=donut_data["Product Name"],
         values=donut_data["Gross Profit"],
-        hole=0.75,
+        hole=0.70,
         marker=dict(
             colors=colors[: len(donut_data)],
             line=dict(color="#0f172a", width=2),  # clean separation
@@ -1113,7 +1054,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         legend=dict(
             orientation="v",
             x=-0.2,
-            y=0.5,
+            y=1.05,
             xanchor="center",
             font=dict(size=11, color="#8a94b2"),
         ),
