@@ -375,7 +375,7 @@ def get_chart_theme(mode="dark"):
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(t=40, b=36, l=40, r=42),
+        margin=dict(t=35, b=30, l=30, r=20),
         font=dict(family="Inter", color="#CBD5F5", size=12),
         title_font=dict(size=14, color="#FFFFFF", family="Inter"),
         hoverlabel=dict(
@@ -1951,18 +1951,16 @@ def tab3_B(filtered_df, T, PAL):
         axis=1,
     )
     col1, col2, col3 = st.columns([1, 1, 3])
-
     with col1:
         risk = "High" if volatility > 5 else "Moderate" if volatility > 3 else "Stable"
 
-        # st.metric(
-        #     "📉 Volatility",
-        #     f"{volatility:.2f}",
-        #     delta=risk,
-        #     delta_color="inverse" if volatility > 5 else "normal",
-        # )
-        st.metric("Margin Volatility", f"{volatility:.2f}")
-    # 📊 CHART
+        st.metric(
+            "📉 Volatility",
+            f"{volatility:.2f}",
+            delta=risk,
+            delta_color="inverse" if volatility > 5 else "normal",
+        )
+        # 📊 CHART
     fig = go.Figure()
 
     # 🔹 LINE + MARKERS
