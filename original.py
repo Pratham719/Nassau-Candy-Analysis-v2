@@ -660,7 +660,7 @@ def kpi_section(filtered_df, full_df):
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
     c2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    c3.metric("Revenue Contribution", "{fmt(rev_con)}%")
+    c3.metric("Revenue Contribution", f"{fmt(rev_con)}%")
     c4.metric("Profit Contribution", f"{fmt(profit_contribution)}%")
     c5.metric("Margin Volatility", f"{volatility:.2f}")
 
@@ -687,6 +687,7 @@ df = load_data()
 
 sidebar = render_sidebar(df)  # get filters
 filtered_df = apply_filters(df, sidebar)  # apply filters
+is_mobile = st.session_state.get("is_mobile", False)
 
 
 def subtab1_leaderboard(filtered_df, T, PAL):
@@ -929,7 +930,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
-        tickangle=-30,
+        tickangle=-30 if is_mobile else 0,
         ticktext=labels,
         categoryorder="array",
         categoryarray=labels,
@@ -941,7 +942,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         bargap=0.20,
         bargroupgap=0.05,
         showlegend=True,
-        xaxis=dict(tickangle=0, tickfont=dict(size=11)),
+        xaxis=dict(tickangle=-30 if is_mobile else 0, tickfont=dict(size=11)),
         legend=dict(
             font=dict(color="#8a94b2", size=11),
             bgcolor="rgba(0,0,0,0)",
@@ -1048,7 +1049,6 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         customdata=donut_data["Hover"],
         hovertemplate="%{customdata}<extra></extra>",
     )
-    is_mobile = st.session_state.get("is_mobile", False)
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
@@ -1514,7 +1514,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
         hovertemplate="%{customdata}<extra></extra>",
     )
     fig_trap.update_xaxes(
-        tickangle=-30 if not st.session_state.get("is_mobile", False) else 0,
+        tickangle=-30 if is_mobile else 0,
         categoryorder="array",
         categoryarray=trap_df["Short Name"].tolist(),
     )
@@ -2167,7 +2167,7 @@ def tab3_B(filtered_df, T, PAL):
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
-        tickangle=-30,
+        tickangle=-30 if is_mobile else 0,
         ticktext=final_df["Short Name"],
     )
 
