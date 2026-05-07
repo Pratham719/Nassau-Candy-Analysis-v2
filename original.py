@@ -2239,7 +2239,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
         "📊 Product Performance",
         "🏢 Division Insights",
         "📈 Business Stability & Risk Insights",
-        "Data Explorer",
+        "🗄️ Data Explorer",
     ]
 )
 
