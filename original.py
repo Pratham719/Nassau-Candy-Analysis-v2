@@ -1851,7 +1851,8 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     fig.update_layout(
         barmode="group",
-        legend=dict(orientation="h", y=1.05, x=0.4),
+        legend=dict(orientation="h", y=1.05, x=0.1 if is_mobile else 0.4,font=dict(color="#CBD5F5", size=11),
+        bgcolor="rgba(0,0,0,0)",),
         **T,
     )
 
@@ -2018,6 +2019,7 @@ def tab3_B(filtered_df, T, PAL):
         hovermode="x unified",
         xaxis_title="",
         yaxis_title="Margin %",
+        legend=dict(font=dict(color="#CBD5F5", size=11), bgcolor="rgba(0,0,0,0)"),
         **T,
     )
 
@@ -2185,6 +2187,8 @@ def tab3_B(filtered_df, T, PAL):
             orientation="h",
             y=1.05,
             x=0.35,
+            font=dict(color="#CBD5F5", size=11),
+            bgcolor="rgba(0,0,0,0)",
         ),
         **T,
     )
