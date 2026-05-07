@@ -654,11 +654,14 @@ def kpi_section(filtered_df, full_df):
 
     volatility = monthly_margin.std()
 
+    def fmt(v):
+        return f"{v:.0f}" if v == int(v) else f"{v:.2f}"
+
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
     c2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-    c3.metric("Revenue Contribution", f"{rev_con:.0f if rev_con==int(rev_con) else}%")
-    c4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+    c3.metric("Revenue Contribution", "{fmt(rev_con)}%")
+    c4.metric("Profit Contribution", f"{fmt(profit_contribution)}%")
     c5.metric("Margin Volatility", f"{volatility:.2f}")
 
 
