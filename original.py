@@ -2224,7 +2224,7 @@ def data_download_section(filtered_df):
     st.dataframe(df.head(200), use_container_width=True)
 
     st.download_button(
-        label="⬇️ Download CSV",
+        label="⬇️ Download Filtered CSV",
         data=csv,
         file_name="nassau_cleaned_data.csv",
         mime="text/csv",
