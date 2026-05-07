@@ -942,13 +942,12 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         bargap=0.20,
         bargroupgap=0.05,
         showlegend=True,
-        xaxis=dict(tickangle=-30 if is_mobile else 0, tickfont=dict(size=11)),
         legend=dict(
             font=dict(color="#8a94b2", size=11),
             bgcolor="rgba(0,0,0,0)",
             orientation="h",
             y=1.05,
-            x=0.4,
+            x=0.1 if is_mobile else 0.4,
         ),
         **T,
     )
@@ -1851,8 +1850,13 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     fig.update_layout(
         barmode="group",
-        legend=dict(orientation="h", y=1.05, x=0.1 if is_mobile else 0.4,font=dict(color="#CBD5F5", size=11),
-        bgcolor="rgba(0,0,0,0)",),
+        legend=dict(
+            orientation="h",
+            y=1.05,
+            x=0.1 if is_mobile else 0.4,
+            font=dict(color="#CBD5F5", size=11),
+            bgcolor="rgba(0,0,0,0)",
+        ),
         **T,
     )
 
@@ -2019,7 +2023,7 @@ def tab3_B(filtered_df, T, PAL):
         hovermode="x unified",
         xaxis_title="",
         yaxis_title="Margin %",
-        legend=dict(font=dict(color="#CBD5F5", size=11), bgcolor="rgba(0,0,0,0)"),
+        showlegend=False,
         **T,
     )
 
@@ -2185,8 +2189,8 @@ def tab3_B(filtered_df, T, PAL):
         ),
         legend=dict(
             orientation="h",
-            y=1.05,
-            x=0.35,
+            y=1.06,
+            x=0.10 if is_mobile else 0.35,
             font=dict(color="#CBD5F5", size=11),
             bgcolor="rgba(0,0,0,0)",
         ),
@@ -2213,7 +2217,7 @@ def tab3_B(filtered_df, T, PAL):
 
 def data_download_section(filtered_df):
 
-    st.markdown("## 📥 Download Cleaned Dataset")
+    st.markdown("## 🗄️ Data Explorer")
 
     csv = df.to_csv(index=False).encode("utf-8")
 
