@@ -640,7 +640,7 @@ def kpi_section(filtered_df, full_df):
     profit_per_unit = safe_div(data["Gross Profit"].sum(), data["Units"].sum())
 
     # 3. Revenue Contribution (vs FULL DATA)
-    revenue_contribution = safe_div(data["Sales"].sum(), full_df["Sales"].sum()) * 100
+    rev_con = safe_div(data["Sales"].sum(), full_df["Sales"].sum()) * 100
 
     # 4. Profit Contribution (vs FULL DATA)
     profit_contribution = (
@@ -653,32 +653,13 @@ def kpi_section(filtered_df, full_df):
     ].mean()
 
     volatility = monthly_margin.std()
-    if st.session_state.get("is_mobile", False):
-        kpis = [
-            ("Gross Margin %", f"{gross_margin:.2f}%"),
-            ("Profit per Unit", f"₹{profit_per_unit:.2f}"),
-            ("Revenue Contribution", f"{revenue_contribution:.2f}%"),
-            ("Profit Contribution", f"{profit_contribution:.2f}%"),
-            ("Margin Volatility", f"{volatility:.2f}"),
-        ]
-        # 2 per row, last one centered
-        row1 = st.columns(2)
-        row1[0].metric(kpis[0][0], kpis[0][1])
-        row1[1].metric(kpis[1][0], kpis[1][1])
 
-        row2 = st.columns(2)
-        row2[0].metric(kpis[2][0], kpis[2][1])
-        row2[1].metric(kpis[3][0], kpis[3][1])
-        # last KPI centered
-        _, mid, _ = st.columns([1, 2, 1])
-        mid.metric(kpis[4][0], kpis[4][1])
-    else:
-        c1, c2, c3, c4, c5 = st.columns(5)
-        c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
-        c2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
-        c3.metric("Revenue Contribution", f"{revenue_contribution:.2f}%")
-        c4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
-        c5.metric("Margin Volatility", f"{volatility:.2f}")
+    c1, c2, c3, c4, c5 = st.columns(5)
+    c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
+    c2.metric("Profit per Unit", f"₹{profit_per_unit:.2f}")
+    c3.metric("Revenue Contribution", f"{rev_con:.0f if rev_con==int(rev_con) else}%")
+    c4.metric("Profit Contribution", f"{profit_contribution:.2f}%")
+    c5.metric("Margin Volatility", f"{volatility:.2f}")
 
 
 def build_others_hover(df, title="📦 Other Products", value_col="Value", max_items=8):
@@ -1064,10 +1045,11 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         customdata=donut_data["Hover"],
         hovertemplate="%{customdata}<extra></extra>",
     )
+    is_mobile = st.session_state.get("is_mobile", False)
     fig_donut.update_layout(
         height=420,
         title="🍩 Profit Contribution",
-        showlegend=False,
+        showlegend=not is_mobile,
         legend=dict(
             orientation="v",
             x=1.02,
@@ -1529,7 +1511,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
         hovertemplate="%{customdata}<extra></extra>",
     )
     fig_trap.update_xaxes(
-        tickangle=-30,
+        tickangle=-30 if not st.session_state.get("is_mobile", False) else 0,
         categoryorder="array",
         categoryarray=trap_df["Short Name"].tolist(),
     )
