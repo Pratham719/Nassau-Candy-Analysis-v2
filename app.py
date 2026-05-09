@@ -1014,7 +1014,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         showlegend=not is_mobile,
         legend=dict(
             orientation="v",
-            x=1,
+            x=0.97,
             y=0.5,
             font=dict(size=11, color="#8a94b2"),
         ),**T,
