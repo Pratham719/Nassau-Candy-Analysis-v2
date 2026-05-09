@@ -1020,7 +1020,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         ),**T,
     )
 
-    # 🧠 CENTER TEXT (PRO TOUCH)
+    # CENTER TEXT (PRO TOUCH)
     fig_donut.add_annotation(
         text=f"<b>Total</b><br>₹{total_profit:,.0f}",
         x=0.5,
@@ -1219,7 +1219,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
             marker=dict(
                 size=size_values,
                 color=perf.apply(get_color, axis=1),
-                line=dict(width=2, color="#0B1220"),
+                line=dict(width=1.2, color=PAL[0]),
                 opacity=0.9,
             ),
             text=perf["Product Name"],
@@ -1241,7 +1241,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
             marker=dict(
                 size=size_values,
                 color=perf.apply(get_color, axis=1),
-                line=dict(width=2, color="#0B1220"),
+                line=dict(width=1.2, color=PAL[0]),
                 opacity=0.9,
             ),
             text=perf["Product Name"],
@@ -1336,10 +1336,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
     add_median_lines(fig_cost, cost_median, sales_median, PAL[0], 0.7)
 
     # FINAL LAYOUT
-    fig_cost.update_layout(
-        xaxis_title="Cost" , height=520,
-        yaxis_title="Sales", **T,
-    )
+    fig_cost.update_layout(xaxis_title="Cost" ,height=520, yaxis_title="Sales", **T,)
 
     fig_cost = sfig(fig_cost , T, "Cost", "Sales", title="💸 Cost vs Sales Efficiency",)
     st.plotly_chart(fig_cost, use_container_width=True)
