@@ -218,23 +218,12 @@ The project also strengthened my understanding of:
 
 ---
 
-# 🌟 What Makes This Project Stand Out
+## 🌟 What Makes This Project Stand Out
 
-### 📊 Focuses on profitability, not just sales
-Shifts the analysis from revenue-driven reporting to **true business profit intelligence**, helping uncover hidden margin leakage.
-
-### 🔗 Combines business + analytics + UI/UX
-Bridges the gap between **data analysis, business thinking, and dashboard design**, creating a complete decision-making tool.
-
-### 🧭 Designed as a decision-support system
-Not just a visualization dashboard — it functions as a **strategic tool for pricing, optimization, and portfolio decisions**.
-
-### 🏭 Strong real-world BI application
-Built using real-world analytical patterns like:
-- Pareto principle (80/20 rule)  
-- margin diagnostics  
-- product performance segmentation  
-- division-level benchmarking  
+📊 Focuses on profitability, not just sales  
+🔗 Combines business + analytics + UI/UX  
+🧭 Designed as a decision-support system  
+🏭 Strong real-world BI application  
 
 ---
 
