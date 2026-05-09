@@ -1,4 +1,4 @@
-# 🍬 Nassau Candy Profitability & Margin Performance Analysis
+# ⚡ Nassau Candy Profitability & Margin Performance Analysis
 
 ## 📌 Overview
 
@@ -151,7 +151,7 @@ Nassau-Candy-Analysis-v2/
 ├── requirements/
 ├── data/
 ├── notebooks/
-├── research paper/
+├── research-paper/
 └── README.md
 ```
 
@@ -174,13 +174,13 @@ cd Nassau-Candy-Analysis-v2
 ## 3️⃣ Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
 ```
 
 ## 4️⃣ Run Streamlit App
 
 ```bash
-streamlit run app.py
+streamlit run original.py
 ```
 
 ---
@@ -223,3 +223,15 @@ Potential future enhancements include:
 # 📄 License
 
 This project is intended for educational and portfolio purposes.
+
+---
+
+# 🤝 Feedback & Connect
+
+Feedback, suggestions, and improvement ideas are always welcome.
+
+If you'd like to discuss analytics, dashboard design, or data visualization, feel free to connect with me on LinkedIn.
+
+🔗 LinkedIn: [\[Your LinkedIn URL\]](https://www.linkedin.com/in/pratham-ds/)
+
+⭐ If you found this project interesting, feel free to explore the dashboard and live application.
