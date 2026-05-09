@@ -956,7 +956,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         axis=1,
     )
 
-    # 🔥 OTHER HOVER (DETAILED)
+    # OTHER HOVER (DETAILED)
     if not small.empty:
 
         other_profit = small["Gross Profit"].sum()
@@ -1014,7 +1014,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         showlegend=not is_mobile,
         legend=dict(
             orientation="v",
-            x=1.02,
+            x=1,
             y=0.5,
             font=dict(size=11, color="#8a94b2"),
         ),**T,
