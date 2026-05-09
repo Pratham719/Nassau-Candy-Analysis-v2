@@ -149,7 +149,8 @@ Nassau-Candy-Analysis-v2/
 │
 ├── original.py
 ├── requirements/
-├── data/Notebooks/
+├── data/
+├── notebooks/
 ├── research paper/
 └── README.md
 ```
