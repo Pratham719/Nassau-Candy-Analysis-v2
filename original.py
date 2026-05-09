@@ -1219,7 +1219,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
             marker=dict(
                 size=size_values,
                 color=perf.apply(get_color, axis=1),
-                line=dict(width=1.2, color=PAL[0]),
+                line=dict(width=2, color="#0B1220"),
                 opacity=0.9,
             ),
             text=perf["Product Name"],
@@ -1241,7 +1241,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
             marker=dict(
                 size=size_values,
                 color=perf.apply(get_color, axis=1),
-                line=dict(width=1.2, color=PAL[0]),
+                line=dict(width=2, color="#0B1220"),
                 opacity=0.9,
             ),
             text=perf["Product Name"],
@@ -1262,8 +1262,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
         color=PAL[0],
     )
     # 🔹 APPLY THEME
-    fig.update_layout(title=f"📈 {view}", height=520, **T)
-
+    fig = sfig(fig,T,"Sales","Gross Profit" if view == "Profit vs Sales" else "Margin %",title=f"📈 {view}")
     st.plotly_chart(fig, use_container_width=True)
 
     insight_box(
