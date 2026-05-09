@@ -1315,7 +1315,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
             size=size_vals,
             color=colors,
             opacity=0.9,
-            line=dict(width=1.2, color=PAL[0]),  # glow edge
+            line=dict(width=1.2, color="#0F172A"),  # glow edge
         ),
         text=cost_df["Product Name"],
         customdata=cost_df[["Gross Profit", "Gross Margin %"]],
@@ -1341,7 +1341,7 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
     st.plotly_chart(fig_cost, use_container_width=True)
 
     insight_box(
-        "High cost + low sales = inefficiency. Low cost + high sales = scalable winners.",
+        "🟢 High sales with controlled cost indicate scalable efficiency  |  🔴 Rising cost with weak sales signals operational risk  |  🔵 Strong margin products strengthen profitability  |  🟡 Moderate performers represent optimization opportunities",
         "warning",
     )
 
