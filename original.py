@@ -11,10 +11,10 @@ division_kpi = pd.read_csv("data/division_kpi.csv")
 
 st.set_page_config(
     page_title="Nassau Candy | Profitability Analysis",
-    page_icon="📊",
+    page_icon="⚡",
     layout="wide",
 )
-st.title("🍬 Nassau Candy Profitability Dashboard")
+st.title("⚡ Product Line Profitability & Margin Performance Analysis for Nassau Candy Distributor")
 
 st.markdown(
     """
@@ -73,7 +73,7 @@ header svg {  fill: white !important; }
     background: rgba(108,99,255,0.25) !important;
     color: #c8d0e8 !important;
 
-    font-size: 1rem !important;   /* 🔥 FIXED */
+    font-size: 1rem !important;   
     font-weight: 500;
 
     border-radius: 6px !important;
@@ -139,7 +139,7 @@ section[data-testid="stSidebar"] [data-baseweb="select"] {
     align-items: center !important;
     gap: 4px !important;
 }
-/* 🧠 SIDEBAR TITLE*/
+/* SIDEBAR TITLE*/
 section[data-testid="stSidebar"] h1 {
     font-size: 1.1rem;
     font-weight: 700;
@@ -181,7 +181,7 @@ section[data-testid="stSidebar"] .stDateInput {
     margin-bottom: 12px !important;
 }
 
-/*============📊 KPI CARDS (CLEAN SAAS STYLE)============*/
+/*============ KPI CARDS (CLEAN SAAS STYLE)============*/
 div[data-testid="stMetric"] {
     background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
     border: 1px solid var(--border);
@@ -329,17 +329,17 @@ def load_data(path="data/cleaned_data.csv"):
 
     df = pd.read_csv(path)
 
-    # 🧹 CLEANING
+    # CLEANING
     df.columns = df.columns.str.strip()
 
     # Date handling (important)
     df["Order Date"] = pd.to_datetime(df["Order Date"], dayfirst=True, errors="coerce")
     df = df.dropna(subset=["Order Date"])
 
-    # 🔤 PRODUCT NORMALIZATION
+    # PRODUCT NORMALIZATION
     df["Product Name Clean"] = df["Product Name"].astype(str).str.strip().str.lower()
 
-    # 📊 CORE METRICS
+    # CORE METRICS
     df["Sales"] = pd.to_numeric(df["Sales"], errors="coerce").fillna(0)
     df["Cost"] = pd.to_numeric(df["Cost"], errors="coerce").fillna(0)
     df["Gross Profit"] = pd.to_numeric(df["Gross Profit"], errors="coerce").fillna(0)
@@ -352,7 +352,7 @@ def load_data(path="data/cleaned_data.csv"):
     df["Gross Margin %"] = np.where(
         df["Sales"] > 0, (df["Gross Profit"] / df["Sales"]) * 100, 0
     )
-    # 📦 FINAL SAFETY
+    # FINAL SAFETY
     df = df.replace([float("inf"), -float("inf")], 0)
 
     return df
@@ -372,14 +372,8 @@ def get_chart_theme(mode="dark"):
         ),
     )
     PAL = [
-        "#8B5CF6",
-        "#22FFB2",
-        "#FF3B3B",
-        "#FFC857",
-        "#38BDF8",
-        "#F472B6",
-        "#A78BFA",
-        "#2DD4BF",
+        "#8B5CF6","#22FFB2","#FF3B3B","#FFC857",
+        "#38BDF8","#F472B6","#A78BFA","#2DD4BF",
     ]
     return T, PAL
 
@@ -438,12 +432,9 @@ def insight_box(text, type="info"):
 
 def simple_hover(name, sales=None, profit=None, margin=None):
     text = f"<b>{name}</b><br>"
-    if sales is not None:
-        text += f"Sales: ₹{sales:,.0f}<br>"
-    if profit is not None:
-        text += f"Profit: ₹{profit:,.0f}<br>"
-    if margin is not None:
-        text += f"Margin: {margin:.2f}%"
+    if sales is not None:       text += f"Sales: ₹{sales:,.0f}<br>"
+    if profit is not None:      text += f"Profit: ₹{profit:,.0f}<br>"
+    if margin is not None:      text += f"Margin: {margin:.2f}%"
     return text
 
 
@@ -530,7 +521,7 @@ def render_sidebar(df):
 
     df["Factory"] = df["Product Name Clean"].apply(map_factory)
 
-    # fallback using contains (important 🔥)
+    # fallback using contains 
     df.loc[
         df["Factory"].isna() & df["Product Name Clean"].str.contains("chocolate"),
         "Factory",
@@ -546,8 +537,9 @@ def render_sidebar(df):
     )
     is_mobile = st.sidebar.checkbox("📱 Mobile view", value=False)
     st.session_state["is_mobile"] = is_mobile
+    
     if is_mobile:
-        st.sidebar.caption("💡 Rotate phone horizontally for best view.")
+        st.sidebar.info("💡 Rotate phone horizontally for best view.")
     return {
         "date_range": date_range,
         "divisions": selected_divisions,
@@ -654,8 +646,7 @@ def kpi_section(filtered_df, full_df):
 
     volatility = monthly_margin.std()
 
-    def fmt(v):
-        return f"{v:.0f}" if v == int(v) else f"{v:.2f}"
+    def fmt(v):    return f"{v:.0f}" if v == int(v) else f"{v:.2f}"
 
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Gross Margin %", f"{gross_margin:.2f}%")
@@ -701,8 +692,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     )
 
     product_summary["Margin %"] = (
-        product_summary["Gross Profit"] / product_summary["Sales"] * 100
-    )
+        product_summary["Gross Profit"] / product_summary["Sales"] * 100)
 
     # Safety
     product_summary = product_summary.replace([np.inf, -np.inf], 0).fillna(0)
@@ -710,8 +700,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     top_n = min(5, len(product_summary))
 
     top_products = product_summary.sort_values(by="Gross Profit", ascending=False).head(
-        top_n
-    )
+        top_n)
 
     bottom_products = product_summary.sort_values(
         by="Gross Profit", ascending=True
@@ -725,20 +714,17 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     q40 = top_products["Gross Profit"].quantile(0.40)
 
     for val in top_products["Gross Profit"]:
-        if val >= q75:
-            colors_top.append("#00D4AA")
-        elif val >= q40:
-            colors_top.append("#FFB347")
-        else:
-            colors_top.append("#FF6B6B")
+        if val >= q75:      colors_top.append("#00D4AA")
+        elif val >= q40:    colors_top.append("#FFB347")
+        else:               colors_top.append("#FF6B6B")
+    
     top_products["Short Name"] = top_products["Product Name"].apply(
         shorten_product_name
     )
-
     fig_top = go.Figure()
+
     fig_top.add_bar(
-        y=top_products["Short Name"],  # ✅ FIXED
-        x=top_products["Gross Profit"],  # ✅ FIXED
+        y=top_products["Short Name"],  x=top_products["Gross Profit"],  
         orientation="h",
         marker=dict(
             color=colors_top,
@@ -754,15 +740,13 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             "Profit: ₹%{x:,.0f}<br>"
             "Sales: ₹%{customdata[0]:,.0f}<br>"
             "Margin: %{customdata[1]:.2f}%<extra></extra>"
-        ),
-    )
+        ),)
 
     fig_top.update_layout(
         yaxis=dict(autorange="reversed"),
-        title_y=0.98,
-        **T,
+        title_y=0.98,**T,
     )
-    fig_top.update_traces(cliponaxis=False)  # 🚀 allows text to go outside safely
+    fig_top.update_traces(cliponaxis=False)  
 
     fig_top = sfig(fig_top, T, "Profit", "", title="🏆 Top Profit Drivers")
     col1.plotly_chart(fig_top, use_container_width=True)
@@ -772,21 +756,17 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     q30 = bottom_products["Gross Profit"].quantile(0.30)
 
     for val in bottom_products["Gross Profit"]:
-        if val < 0:
-            colors_bottom.append("#FF3B3B")
-        elif val < q30:
-            colors_bottom.append("#FF6B6B")
-        else:
-            colors_bottom.append("#FFB347")
+        if val < 0:    colors_bottom.append("#FF3B3B")
+        elif val < q30:    colors_bottom.append("#FF6B6B")
+        else:    colors_bottom.append("#FFB347")
+    
     bottom_products["Short Name"] = bottom_products["Product Name"].apply(
-        shorten_product_name
-    )
+        shorten_product_name)
 
     fig_bottom = go.Figure()
 
     fig_bottom.add_bar(
-        y=bottom_products["Short Name"],  # ✅ FIXED
-        x=bottom_products["Gross Profit"],  # ✅ FIXED
+        y=bottom_products["Short Name"],  x=bottom_products["Gross Profit"],  
         orientation="h",
         marker=dict(
             color=colors_bottom, line=dict(width=1.5, color="#0B1220"), cornerradius=6
@@ -800,18 +780,15 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             "Profit: ₹%{x:,.0f}<br>"
             "Sales: ₹%{customdata[0]:,.0f}<br>"
             "Margin: %{customdata[1]:.2f}%<extra></extra>"
-        ),
-    )
+        ),)
 
     fig_bottom.update_layout(
-        yaxis=dict(autorange="reversed"),
-        **T,
+        yaxis=dict(autorange="reversed"),**T,
     )
     fig_bottom.update_traces(cliponaxis=False)  # 🚀 allows text to go outside safely
 
-    fig_bottom = sfig(
-        fig_bottom, T, "Profit", "", title="🔻 Low Profit / Risk Products"
-    )
+    fig_bottom = sfig(fig_bottom, T, "Profit", "", title="🔻 Low Profit / Risk Products")
+    
     col2.plotly_chart(fig_bottom, use_container_width=True)
     insight_box(
         "Top products drive majority of profit. Protect them while improving weaker ones.",
@@ -871,12 +848,9 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     gap_df["Short Name"] = gap_df["Product Name"].apply(shorten_product_name)
 
     def get_color(r):
-        if r < 0.2:
-            return "#F87171"  # 🔴 weak
-        elif r < 0.4:
-            return "#FBBF24"  # 🟡 moderate
-        else:
-            return "#34D399"  # 🟢 strong
+        if r < 0.2:         return "#F87171"  
+        elif r < 0.4:       return "#FBBF24"  
+        else:               return "#34D399"  
 
     colors = [get_color(r) for r in gap_df["Profit Ratio"]]
 
@@ -893,8 +867,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
 
     # 🔹 Revenue (neutral tone)
     fig.add_bar(
-        x=x_rev,
-        y=gap_df["Sales"],
+        x=x_rev , y=gap_df["Sales"],
         width=bar_width,
         text=[f"₹{v:,.0f}" for v in gap_df["Sales"]],
         textposition="outside",
@@ -948,17 +921,10 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             orientation="h",
             y=1.05,
             x=0.1 if is_mobile else 0.4,
-        ),
-        **T,
+        ),**T,
     )
 
-    fig = sfig(
-        fig,
-        T,
-        "Product",
-        "Amount (₹)",
-        title="💰 Revenue vs Profit Reality Check",
-    )
+    fig = sfig(fig, T, "Product", "Amount (₹)", title="💰 Revenue vs Profit Reality Check",)
     st.plotly_chart(fig, use_container_width=True)
 
     insight_box(
@@ -1023,14 +989,8 @@ def subtab1_leaderboard(filtered_df, T, PAL):
 
     # BRIGHT COLOR PALETTE (FIXED)
     colors = [
-        "#00F5D4",
-        "#F15BB5",
-        "#FEE440",
-        "#00BBF9",
-        "#9B5DE5",
-        "#F3722C",
-        "#43AA8B",
-        "#F94144",
+        "#00F5D4","#F15BB5","#FEE440","#00BBF9",
+        "#9B5DE5","#F3722C","#43AA8B","#F94144",
     ]
     # PLOT
     fig_donut = go.Figure()
@@ -1057,8 +1017,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
             x=1.02,
             y=0.5,
             font=dict(size=11, color="#8a94b2"),
-        ),
-        **T,
+        ),**T,
     )
 
     # 🧠 CENTER TEXT (PRO TOUCH)
@@ -1094,13 +1053,8 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     labels, parents, values, colors, hover_text, ids = [], [], [], [], [], []
 
     TREE_DIV_PALETTE = [
-        "#7C3AED",
-        "#0EA5E9",
-        "#F59E0B",
-        "#10B981",
-        "#EC4899",
-        "#14B8A6",
-        "#F97316",
+        "#7C3AED","#0EA5E9","#F59E0B","#10B981",
+        "#EC4899","#14B8A6","#F97316",
     ]
     tree_data = tree_data.sort_values("Sales", ascending=False)
     div_list = list(tree_data["Division"].unique())
@@ -1110,16 +1064,11 @@ def subtab1_leaderboard(filtered_df, T, PAL):
 
     # PRODUCT COLOR — better, visible palette
     def color_scale(m):
-        if m < 20:
-            return "#FF4444"  # 🔴 vivid red
-        elif m < 40:
-            return "#FF8C00"  # 🟠 dark orange
-        elif m < 60:
-            return "#F5C518"  # 🟡 gold
-        elif m < 75:
-            return "#65A30D"  # 🟢 olive green
-        else:
-            return "#00C896"  # 💚 emerald
+        if m < 20:      return "#FF4444"  # 🔴 vivid red
+        elif m < 40:    return "#FF8C00"  # 🟠 dark orange
+        elif m < 60:    return "#F5C518"  # 🟡 gold
+        elif m < 75:    return "#65A30D"  # 🟢 olive green
+        else:           return "#00C896"  # 💚 emerald
 
     tree_data["Color"] = tree_data["Margin %"].apply(color_scale)
 
@@ -1155,7 +1104,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
         )
 
     total_sales = sum(v for v, p in zip(values, parents) if p != "")  # only leaf values
-    min_share = 0.03  # tune this
+    min_share = 0.03  
 
     # pre-compute label string per tile
     text_labels = []
@@ -1180,7 +1129,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
                 pad=dict(t=22, l=4, r=4, b=2),
             ),
             branchvalues="total",
-            text=text_labels,  # 🔥 pre-computed conditional labels
+            text=text_labels,  # pre-computed conditional labels
             texttemplate="%{text}",  # just render whatever we put in text
             textposition="middle center",
             textfont=dict(family="Inter", size=12, color="#FFFFFF"),
@@ -1191,8 +1140,7 @@ def subtab1_leaderboard(filtered_df, T, PAL):
     )
     fig_tree.update_layout(
         height=580,
-        title="🌳 Product Mix & Margin Structure",
-        **T,
+        title="🌳 Product Mix & Margin Structure",**T,
     )
 
     st.plotly_chart(fig_tree, use_container_width=True)
@@ -1350,18 +1298,14 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
 
     # COLOR BASED ON MARGIN (CONSISTENT WITH YOUR SYSTEM)
     def cost_color(m):
-        if m < 20:
-            return PAL[2]  # red
-        elif m < 40:
-            return PAL[3]  # yellow
-        elif m < 60:
-            return PAL[4]  # opportunity
-        else:
-            return PAL[1]  # strong
+        if m < 20:      return PAL[2]  # red
+        elif m < 40:    return PAL[3]  # yellow
+        elif m < 60:    return PAL[4]  # opportunity
+        else:           return PAL[1]  # strong
 
     colors = cost_df["Gross Margin %"].apply(cost_color)
 
-    # 📊 FIGURE
+    # FIGURE
     fig_cost = go.Figure()
 
     fig_cost.add_scatter(
@@ -1393,19 +1337,11 @@ def subtab2_performance_segmentation(filtered_df, T, PAL):
 
     # FINAL LAYOUT
     fig_cost.update_layout(
-        height=520,
-        xaxis_title="Cost",
-        yaxis_title="Sales",
-        **T,
+        xaxis_title="Cost" , height=520,
+        yaxis_title="Sales", **T,
     )
 
-    fig_cost = sfig(
-        fig_cost,
-        T,
-        "Cost",
-        "Sales",
-        title="💸 Cost vs Sales Efficiency",
-    )
+    fig_cost = sfig(fig_cost , T, "Cost", "Sales", title="💸 Cost vs Sales Efficiency",)
     st.plotly_chart(fig_cost, use_container_width=True)
 
     insight_box(
@@ -1525,16 +1461,9 @@ def subtab3_margin_stability(filtered_df, T, PAL):
             categoryorder="array",
             categoryarray=trap_df["Short Name"].tolist(),
         ),
-        height=420,
-        **T,
+        height=420,**T,
     )
-    fig_trap = sfig(
-        fig_trap,
-        T,
-        "Product",
-        "Sales (₹)",
-        title="🔥 Revenue Trap Analysis (High Sales, Low Profit)",
-    )
+    fig_trap = sfig(fig_trap, T, "Product", "Sales (₹)", title="🔥 Revenue Trap Analysis (High Sales, Low Profit)",)
     fig_trap.update_traces(cliponaxis=False)
 
     st.plotly_chart(fig_trap, use_container_width=True)
@@ -1563,6 +1492,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
     )
 
     low_margin["Short Name"] = low_margin["Product Name"].apply(shorten_product_name)
+    
     # Chart
     q1, q2 = low_margin["Margin %"].quantile(0.33), low_margin["Margin %"].quantile(
         0.66
@@ -1590,13 +1520,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
 
     fig_lm.update_layout(height=420, **T)
 
-    fig_lm = sfig(
-        fig_lm,
-        T,
-        "Margin (%)",
-        "Product",
-        title="🔴 Margin Risk Products",
-    )
+    fig_lm = sfig(fig_lm, T, "Margin (%)", "Product", title="🔴 Margin Risk Products",)
 
     st.plotly_chart(fig_lm, use_container_width=True)
 
@@ -1622,12 +1546,9 @@ def subtab3_margin_stability(filtered_df, T, PAL):
     eff_median = eff_df["Efficiency"].median()
 
     def eff_color(v):
-        if v < eff_median * 0.7:
-            return "#334155"  # ⚫ low (neutral/dull)
-        elif v < eff_median:
-            return "#22D3EE"  # 🔵 improving (cyan)
-        else:
-            return "#22FFB2"  # 🟢 high efficiency (your main green)
+        if v < eff_median * 0.7:    return "#334155"  # ⚫ low (neutral/dull)
+        elif v < eff_median:        return "#22D3EE"  # 🔵 improving (cyan)
+        else:                       return "#22FFB2"  # 🟢 high efficiency (your main green)
 
     colors = eff_df["Efficiency"].apply(eff_color)
 
@@ -1649,13 +1570,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
         ),
     )
 
-    fig_eff = sfig(
-        fig_eff,
-        T,
-        "Efficiency (Profit / Cost)",
-        "",
-        title="🟣 Cost Efficiency Ranking",
-    )
+    fig_eff = sfig(fig_eff, T, "Efficiency (Profit / Cost)", "", title="🟣 Cost Efficiency Ranking",)
 
     st.plotly_chart(fig_eff, use_container_width=True)
 
@@ -1713,16 +1628,11 @@ def subtab3_margin_stability(filtered_df, T, PAL):
             return ["background-color: rgba(148, 163, 184, 0.08)"] * len(row)
 
     def color_action(val):
-        if "🔴" in val:
-            return "color: #FF6B6B; font-weight: 600;"
-        elif "🟠" in val:
-            return "color: #FFB347; font-weight: 600;"
-        elif "🟡" in val:
-            return "color: #FFD166; font-weight: 600;"
-        elif "🚀" in val:
-            return "color: #00D4AA; font-weight: 700;"
-        else:
-            return "color: #94A3B8;"
+        if "🔴" in val:     return "color: #FF6B6B; font-weight: 600;"
+        elif "🟠" in val:   return "color: #FFB347; font-weight: 600;"
+        elif "🟡" in val:   return "color: #FFD166; font-weight: 600;"
+        elif "🚀" in val:   return "color: #00D4AA; font-weight: 700;"
+        else:                return "color: #94A3B8;"
 
     # Apply
     action_df["Action"] = action_df.apply(action_logic, axis=1)
@@ -1753,7 +1663,7 @@ def subtab3_margin_stability(filtered_df, T, PAL):
             }
         )
     )
-    # 🎯 KPI SUMMARY (clean + insightful)
+    # KPI SUMMARY (clean + insightful)
     total = len(action_df)
 
     crit = (action_df["Action"].str.contains("🔴")).sum()
@@ -1787,16 +1697,11 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     # ── UNIQUE COLOR MAP (consistent across all 3 charts) ──
     DIVISION_PALETTE = [
-        "#7C3AED",  # violet
-        "#0EA5E9",  # sky blue
-        "#F59E0B",  # amber
-        "#10B981",  # emerald
-        "#EF4444",  # red
-        "#EC4899",  # pink
-        "#14B8A6",  # teal
-        "#F97316",  # orange
+        "#7C3AED",  "#0EA5E9", "#F59E0B",  "#10B981",  
+        "#EF4444",  "#EC4899",  "#14B8A6",  "#F97316",  
     ]
     divisions = div["Division"].tolist()
+    
     div_color_map = {
         d: DIVISION_PALETTE[i % len(DIVISION_PALETTE)] for i, d in enumerate(divisions)
     }
@@ -1807,8 +1712,7 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     # 🔹 Revenue (neutral glass tone)
     fig.add_bar(
-        x=div["Division"],
-        y=div["Sales"],
+        x=div["Division"] , y=div["Sales"],
         name="Revenue",
         marker=dict(
             color="rgba(155,93,229,0.45)",
@@ -1829,8 +1733,7 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     # 🔹 Profit (highlight)
     fig.add_bar(
-        x=div["Division"],
-        y=div["Gross Profit"],
+        x=div["Division"] , y=div["Gross Profit"],
         name="Profit",
         marker=dict(
             color="#00F5D4",  # neon green
@@ -1856,13 +1759,10 @@ def tab2_division_insights(filtered_df, T, PAL):
             x=0.1 if is_mobile else 0.4,
             font=dict(color="#CBD5F5", size=11),
             bgcolor="rgba(0,0,0,0)",
-        ),
-        **T,
+        ),**T,
     )
 
-    fig = sfig(
-        fig, T, "Division", "Amount (₹)", title="📊 Revenue vs Profit by Division"
-    )
+    fig = sfig(fig, T, "Division", "Amount (₹)", title="📊 Revenue vs Profit by Division")
     fig.update_traces(cliponaxis=False)
 
     st.plotly_chart(fig, use_container_width=True)
@@ -1926,9 +1826,7 @@ def tab2_division_insights(filtered_df, T, PAL):
 
     fig.update_layout(**T)
 
-    fig = sfig(
-        fig, T, "Efficiency (Profit/Sales)", "", title="⚙️ Division Efficiency Ranking"
-    )
+    fig = sfig(fig, T, "Efficiency (Profit/Sales)", "", title="⚙️ Division Efficiency Ranking")
     fig.update_traces(cliponaxis=False)
 
     st.plotly_chart(fig, use_container_width=True)
@@ -1977,7 +1875,7 @@ def tab3_B(filtered_df, T, PAL):
             delta=risk,
             delta_color="inverse" if volatility > 5 else "normal",
         )
-        # 📊 CHART
+    # 📊 CHART
     fig = go.Figure()
 
     # 🔹 LINE + MARKERS
@@ -2006,7 +1904,7 @@ def tab3_B(filtered_df, T, PAL):
         hoverinfo="skip",
     )
 
-    # 📏 AVG LINE
+    # AVG LINE
     avg_margin = trend["Gross Margin %"].mean()
 
     fig.add_hline(
@@ -2168,8 +2066,6 @@ def tab3_B(filtered_df, T, PAL):
         opacity=0.7,
     )
 
-    labels = final_df["Short Name"].tolist()
-
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
@@ -2177,7 +2073,7 @@ def tab3_B(filtered_df, T, PAL):
         ticktext=final_df["Short Name"],
     )
 
-    # 🧱 LAYOUT (MATCH YOUR SYSTEM)
+    # LAYOUT 
     fig.update_layout(
         height=460,
         yaxis=dict(title=metric),
@@ -2193,17 +2089,10 @@ def tab3_B(filtered_df, T, PAL):
             x=0.10 if is_mobile else 0.35,
             font=dict(color="#CBD5F5", size=11),
             bgcolor="rgba(0,0,0,0)",
-        ),
-        **T,
+        ),**T,
     )
 
-    fig = sfig(
-        fig,
-        T,
-        "Product",
-        metric,
-        title="📊 Pareto Analysis (80/20 Rule)",
-    )
+    fig = sfig(fig, T, "Product", metric, title="📊 Pareto Analysis (80/20 Rule)",)
 
     st.plotly_chart(fig, use_container_width=True)
 
