@@ -17,8 +17,24 @@ The project transforms raw operational and sales data into actionable business i
 🔗 Live App:  
 https://candymetrics-dashboard.streamlit.app/
 
-🔗 GitHub Repository:  
-https://github.com/Pratham719/Nassau-Candy-Analysis-v2
+---
+## 💡 Problem → Solution → Impact
+
+#### ⚠️ Problem
+Sales volume alone did not reflect true profitability. Some high-performing products were reducing overall margins.
+
+#### ⚙️ Solution
+Built an interactive BI dashboard to analyze:
+- product-level profitability  
+- division performance  
+- cost vs margin inefficiencies  
+- concentration risk (Pareto analysis)  
+
+#### 📈 Impact
+- Identifies low-margin high-revenue products  
+- Highlights inefficient divisions  
+- Supports pricing and sourcing decisions  
+- Improves profit visibility across portfolio  
 
 ---
 
@@ -42,6 +58,7 @@ This project helps identify:
 # 📊 Core Analytical Areas
 
 ## 📈 Product Profitability Analysis
+
 - Gross profit leaderboard
 - Margin performance tracking
 - Revenue vs profitability comparison
@@ -201,6 +218,26 @@ The project also strengthened my understanding of:
 
 ---
 
+# 🌟 What Makes This Project Stand Out
+
+### 📊 Focuses on profitability, not just sales
+Shifts the analysis from revenue-driven reporting to **true business profit intelligence**, helping uncover hidden margin leakage.
+
+### 🔗 Combines business + analytics + UI/UX
+Bridges the gap between **data analysis, business thinking, and dashboard design**, creating a complete decision-making tool.
+
+### 🧭 Designed as a decision-support system
+Not just a visualization dashboard — it functions as a **strategic tool for pricing, optimization, and portfolio decisions**.
+
+### 🏭 Strong real-world BI application
+Built using real-world analytical patterns like:
+- Pareto principle (80/20 rule)  
+- margin diagnostics  
+- product performance segmentation  
+- division-level benchmarking  
+
+---
+
 # 👨‍💻 Developed By
 
 ### Pratham Rangoonwala
@@ -232,6 +269,6 @@ Feedback, suggestions, and improvement ideas are always welcome.
 
 If you'd like to discuss analytics, dashboard design, or data visualization, feel free to connect with me on LinkedIn.
 
-🔗 LinkedIn: [\[Your LinkedIn URL\]](https://www.linkedin.com/in/pratham-ds/)
+🔗 Let’s Connect on LinkedIn: https://www.linkedin.com/in/pratham-ds/
 
 ⭐ If you found this project interesting, feel free to explore the dashboard and live application.
